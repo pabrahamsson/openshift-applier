@@ -1,0 +1,24 @@
+---
+
+environments:
+  - dev
+  - test
+  - prod
+
+namespace_metadata:
+  NAMESPACE: oa-ci-jinja-templates
+  NAMESPACE_DISPLAY_NAME: OpenShift Applier Jinja Templates Test 1 (displayName)
+  NAMESPACE_DESCRIPTION: OpenShift Applier Jinja Templates Test 1 (description)
+
+openshift_cluster_content:
+- object: projectrequest
+  content:
+  - name: jinja-project-test-template
+    template: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_template.yml"
+    params_from_vars: "{{ namespace_metadata }}"
+    action: create
+    jinjatemplate: true
+  - name: jinja-project-test-file
+    file: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_file.yml"
+    action: create
+    jinjatemplate: true
