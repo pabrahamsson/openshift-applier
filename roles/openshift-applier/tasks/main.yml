@@ -3,6 +3,9 @@
 - name: "Check applier requirements"
   include_tasks: pre-check.yml
 
+- name: "Deprecated variable check"
+  include_tasks: check-for-old-vars.yml
+
 - name: "Error out on anything in the inventory that is no longer supported"
   include_tasks: error-on-unsupported.yml
 
@@ -14,7 +17,6 @@
     loop_var: dependencies
   when:
     - dependencies.galaxy_requirements is defined
-  delegate_to: localhost
 
 - name: "Prepare to copy content to remote host(s) if not running 'locally'"
   import_tasks: prep-copy-inventory-to-remote.yml
@@ -24,7 +26,7 @@
 - name: "Create OpenShift objects"
   include_tasks: process-content.yml
   with_items:
-    - "{{ openshift_cluster_content | filter_applier_items(filter_tags) | default([]) }}"
+    - "{{ openshift_cluster_content | filter_applier_items(include_tags) | default([]) }}"
   loop_control:
     loop_var: entry
   when:
