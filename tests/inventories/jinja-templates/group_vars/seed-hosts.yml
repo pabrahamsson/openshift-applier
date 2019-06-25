@@ -14,11 +14,16 @@ openshift_cluster_content:
 - object: projectrequest
   content:
   - name: jinja-project-test-template
-    template: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_template.yml"
+    template: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_template.j2"
     params_from_vars: "{{ namespace_metadata }}"
     action: create
-    jinjatemplate: true
   - name: jinja-project-test-file
-    file: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_file.yml"
+    file: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_file.j2"
     action: create
-    jinjatemplate: true
+  - name: delete jinja-project-test-template
+    template: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_template.j2"
+    params_from_vars: "{{ namespace_metadata }}"
+    action: delete
+  - name: delete jinja-project-test-file
+    file: "{{ inventory_dir }}/../../files/jinja-templates/projectrequest_file.j2"
+    action: delete

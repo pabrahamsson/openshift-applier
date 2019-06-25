@@ -14,10 +14,9 @@
   with_items:
     - "{{ tmp_dep_dir }}"
 
-- name: Clean up temporary jinja dirs
+- name: Clean up temporary Jinja directory
   file:
     path: "{{ item }}"
     state: absent
   with_items:
-    - "{{ tmp_jinja_dir_file }}"
-    - "{{ tmp_jinja_dir_template }}"
+    - "{{ jinja_tmp_dir.path }}"

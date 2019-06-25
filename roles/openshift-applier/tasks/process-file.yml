@@ -28,30 +28,6 @@
       when: not patch_path.local_path
   when: oc_action == 'patch'
 
-- name: Process Jinja file (if applicable)
-  block:
-    - name: Create temporary directory for Jinja template output
-      tempfile:
-        state: directory
-      register: tmp_jinja_dir_file
-      notify:
-        - Clean up temporary inventory dir
-
-    - name: Set processed Jinja template output path
-      set_fact:
-        jinja_file_output_path: "{{ tmp_jinja_dir_file.path }}/{{ file_facts.oc_path | basename }}"
-
-    - name: Process Jinja template
-      template:
-        src: "{{ file_facts.oc_path }}"
-        dest: "{{ jinja_file_output_path }}"
-
-    - name: Update file path
-      set_fact:
-        file_facts: "{{ file_facts | combine( {'oc_path': jinja_file_output_path} ) }}"
-  when:
-    - jinjatemplate
-
 - name: "{{ oc_action | capitalize }} OpenShift objects based on static files for '{{ entry.object }} : {{ content.name | default(file | basename) }}'"
   command: >
     oc {{ oc_action }} \

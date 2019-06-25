@@ -64,30 +64,6 @@
         param_facts: "{{ (processed_file_facts|length == 0) | ternary([{ 'oc_path': '' }], processed_file_facts) }}"
         processed_file_facts: []
 
-- name: Process Jinja template (if applicable)
-  block:
-    - name: Create temporary directory for Jinja template output
-      tempfile:
-        state: directory
-      register: tmp_jinja_dir_template
-      notify:
-        - Clean up temporary inventory dir
-
-    - name: Set processed Jinja template output path
-      set_fact:
-        jinja_template_output_path: "{{ tmp_jinja_dir_template.path }}/{{ template_facts.oc_path | basename }}"
-
-    - name: Process Jinja template
-      template:
-        src: "{{ template_facts.oc_path }}"
-        dest: "{{ jinja_template_output_path }}"
-
-    - name: Update template path
-      set_fact:
-        template_facts: "{{ template_facts | combine( {'oc_path': jinja_template_output_path} ) }}"
-  when:
-    - jinjatemplate
-
 - name: "{{ oc_action | capitalize }} OpenShift objects based on template with params for '{{ entry.object }} : {{ content.name | default(template | basename) }}'"
   shell: >
     oc process \

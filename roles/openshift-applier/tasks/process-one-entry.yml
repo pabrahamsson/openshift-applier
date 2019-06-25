@@ -8,7 +8,6 @@
     template: "{{ content.template | default('') }}"
     params: "{{ content.params | default('') }}"
     params_from_vars: "{{ content.params_from_vars | default({}) }}"
-    jinjatemplate: "{{ content.jinjatemplate | default(false) }}"
     oc_ignore_unknown_parameters: "{{ content.ignore_unknown_parameters | default(oc_ignore_unknown_parameters) }}"
     no_log: False
 
@@ -36,6 +35,10 @@
     - "{{ content.pre_steps | default('') }}"
   loop_control:
     loop_var: step
+
+- name: "Process Jinja Template (if applicable)"
+  include_tasks: process-jinja.yml
+  when: template | regex_search('\.j2$') or file | regex_search('\.j2$')
 
 - name: "Process Template (if applicable)"
   include_tasks: process-template.yml
