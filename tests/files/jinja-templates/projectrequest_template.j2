@@ -14,7 +14,7 @@ metadata:
 objects:
 {% for environment in environments %}
 - apiVersion: v1
-  kind: ProjectRequest
+  kind: {{ 'Project' if (oc_action == 'delete') else 'ProjectRequest' }}
   metadata:
     name: ${NAMESPACE}-template-{{ environment }}
   description: '${NAMESPACE_DESCRIPTION} (template) - {{ environment }}'

@@ -4,7 +4,7 @@ kind: List
 items:
 {% for environment in environments %}
 - apiVersion: v1
-  kind: ProjectRequest
+  kind: {{ 'Project' if (oc_action == 'delete') else 'ProjectRequest' }}
   metadata:
     name: {{ namespace_metadata.NAMESPACE }}-file-{{ environment }}
   description: {{ namespace_metadata.NAMESPACE_DESCRIPTION }} (file) - {{ environment }}
