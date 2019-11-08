@@ -45,7 +45,9 @@ openshift_cluster_content:
     - "path/to/galaxy/requirements.yml" # Has to be a local file - e.g: with the inventory
 - object: <object_type>
   pre_steps: # Optional: pre-steps at object level can be added if desired
-    - role: <path to an ansible role>
+  - role: <path to an ansible role>
+    tags:
+    - tag1
   content:
   - name: <definition_name>
     pre_steps: # Optional: pre-steps at content level can be added if desired

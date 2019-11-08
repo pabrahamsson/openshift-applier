@@ -86,6 +86,16 @@ def filter_applier_item(applier_item, include_tags, exclude_tags):
         exclude_list = exclude_tags.split(",")
         exclude_list = [i.strip() for i in exclude_list]
 
+    # Handle the 'pre_steps' entries
+    if 'pre_steps' in applier_item:
+        for r in applier_item['pre_steps']:
+            filter_content(r, applier_item['pre_steps'], include_list, exclude_list)
+
+    # Handle the 'post_steps' entries
+    if 'post_steps' in applier_item:
+        for r in applier_item['post_steps']:
+            filter_content(r, applier_item['post_steps'], include_list, exclude_list)
+
     # Handle the 'content' entries
     if 'content' in applier_item:
         for c in applier_item['content'][:]:

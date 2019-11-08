@@ -3,7 +3,7 @@
 - name: "Include any pre-processing role(s) before applying content"
   include_tasks: pre-post-step.yml
   with_items:
-    - "{{ entry.pre_steps | default('') }}"
+    - "{{ (entry | filter_applier_item(include_tags, exclude_tags)).pre_steps | default([]) }}"
   loop_control:
     loop_var: step
 
@@ -17,6 +17,6 @@
 - name: "Include any post-processing role(s) after applying content"
   include_tasks: pre-post-step.yml
   with_items:
-    - "{{ entry.post_steps | default('') }}"
+    - "{{ (entry | filter_applier_item(include_tags, exclude_tags)).post_steps | default([]) }}"
   loop_control:
     loop_var: step
